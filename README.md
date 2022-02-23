@@ -518,7 +518,6 @@
                         currentUser: null,
                     };
                 })
-            //-------------------------------------------------------------------
             ) as ActionReducer<UsersState, Action>;
         
         public static getReducers(state: any, action: any) {

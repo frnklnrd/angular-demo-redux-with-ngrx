@@ -2,7 +2,7 @@
 
 ### Create New Project
 
-    ng new demo-angular-ngrx
+    ng new app
 
 ### Install ngrx store library (https://ngrx.io/guide/store/install)
 

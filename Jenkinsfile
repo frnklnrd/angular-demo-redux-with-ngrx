@@ -2,8 +2,8 @@
 pipeline {
     agent any
     parameters {
-        string(name: 'name_imagen', defaultValue: 'demo-angular-redux-with-ngrx', description: 'Nombre de la imagen')
-        string(name: 'name_container', defaultValue: 'dev1-server-container', description: 'Nombre del docker')
+        string(name: 'name_imagen', defaultValue: 'my-angular-app', description: 'Nombre de la imagen')
+        string(name: 'name_container', defaultValue: 'dev1', description: 'Nombre del docker')
         string(name: 'tag_imagen', defaultValue: 'latest', description: 'Etiqueta de la imagen')
         string(name: 'port_imagen', defaultValue: '8001', description: 'Puerto a publicar')
     }

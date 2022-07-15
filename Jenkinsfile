@@ -21,8 +21,8 @@ pipeline {
             steps {
                 script {
                     sh '''
-                         docker stop ${name_final}
-                         docker rm -f ${name_final}
+                        docker stop ${name_final}
+                        docker rm -f ${name_final}
                     '''
                 }
             }
@@ -32,7 +32,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    docker build . -t ${name_imagen}:${tag_imagen}
+                        docker build . -t ${name_imagen}:${tag_imagen}
                     '''
                 }
             }
@@ -42,7 +42,6 @@ pipeline {
                 script {
                     sh '''
                         docker run -dp ${port_imagen}:80 --name ${name_final} ${name_imagen}:${tag_imagen}
-
                     '''
                 }
             }

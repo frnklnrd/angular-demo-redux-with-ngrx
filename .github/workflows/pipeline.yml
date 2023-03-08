@@ -89,6 +89,18 @@ jobs:
         shell: pwsh
         run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
 
+      - name: Show current directory
+        shell: pwsh
+        run: echo "${{ steps.app-current-dir.outputs.dir }}/node_modules"
+
+      - name: Show current directory content
+        shell: pwsh
+        run: ls -l ${{ steps.app-current-dir.outputs.dir }}
+
+      - name: Show current node_modules directory content
+        shell: pwsh
+        run: ls -l ${{ steps.app-current-dir.outputs.dir }}/node_modules
+
       - name: Save Cache app node modules
         uses: actions/cache@v3
         env:

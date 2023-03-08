@@ -109,6 +109,9 @@ jobs:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
+      - name: See folder
+        run: ls -l
+
       - name: Restore Cache app node modules
         uses: actions/cache/restore@v3
         env:
@@ -117,6 +120,9 @@ jobs:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: See folder
+        run: ls -l
 
       - name: Build App
         run: npm run build

@@ -27,10 +27,6 @@ jobs:
       - name: Setup Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Show npm cache directory
-        shell: pwsh
-        run: echo "dir=$(npm config get cache)"
-
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: pwsh
@@ -59,10 +55,6 @@ jobs:
         with:
           node-version: 16.17.x
 
-      - name: Show npm cache directory
-        shell: pwsh
-        run: echo "dir=$(npm config get cache)"
-
       - name: Get npm cache directory
         id: npm-cache-dir
         shell: pwsh
@@ -80,35 +72,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Show current directory
-        shell: pwsh
-        run: pwd
-
-      - name: Get current directory
-        id: app-current-dir
-        shell: pwsh
-        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
-
-      - name: Show current directory
-        shell: pwsh
-        run: echo "${{ steps.app-current-dir.outputs.dir }}"
-
-      - name: Show current directory content
-        shell: pwsh
-        run: ls -l ${{ steps.app-current-dir.outputs.dir }}
-
-      - name: Show current node_modules directory content
-        shell: pwsh
-        run: ls -l ${{ steps.app-current-dir.outputs.dir }}/node_modules
-
-      - name: Save Cache app node modules
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-app-node-modules
-        with:
-          path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
   build:
     runs-on: ubuntu-22.04
     needs: [install]
@@ -122,10 +85,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.17.x
-
-      - name: Show npm cache directory
-        shell: pwsh
-        run: echo "dir=$(npm config get cache)"
 
       - name: Get npm cache directory
         id: npm-cache-dir
@@ -141,70 +100,15 @@ jobs:
           path: ${{ steps.npm-cache-dir.outputs.dir }}
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Show current directory
-        shell: pwsh
-        run: pwd
-
-      - name: Get current directory
-        id: app-current-dir
-        shell: pwsh
-        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
-
-      - name: See folder
-        run: ls -l
-
-      - name: Restore Cache app node modules
-        uses: actions/cache/restore@v3
-        env:
-          cache-name: cache-app-node-modules
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: See folder
-        run: ls -l
-
       - name: Build App
         run: npm run build
 
-      - name: Save Cache dist
-        uses: actions/cache@v3
-        env:
-          cache-name: cache-app-dist
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ${{ steps.npm-current-dir.outputs.dir }}/dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   deploy:
     runs-on: ubuntu-22.04
     # if: ${{ always() }}
     needs: [build]
     steps:
-      - name: Show current directory
-        shell: pwsh
-        run: pwd
-
-      - name: Get current directory
-        id: app-current-dir
-        shell: pwsh
-        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
-
-      - name: See folder
-        run: ls -l
-
-      - name: Restore Cache dist
-        uses: actions/cache/restore@v3
-        env:
-          cache-name: cache-app-dist
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ${{ steps.app-current-dir.outputs.dir }}/dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: See folder
-        run: ls -l
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.13

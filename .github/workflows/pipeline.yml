@@ -179,7 +179,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-22.04
-    if: ${{ always() }}
+    # if: ${{ always() }}
     needs: [build]
     steps:
       - name: Show current directory

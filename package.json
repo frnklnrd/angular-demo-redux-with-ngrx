@@ -23,6 +23,7 @@
     "@ngrx/store": "^13.0.2",
     "@ngrx/store-devtools": "^13.0.2",
     "array-shuffle": "^3.0.0",
+    "express": "^4.18.2",
     "ngrx-store-localstorage": "^13.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.3.0",
@@ -41,5 +42,9 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2"
-  }
+  },
+  "engines": {
+    "node": "16.15.1",
+    "npm": "8.11.0"
+
 }

@@ -68,7 +68,7 @@ jobs:
         shell: pwsh
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
-      - name: Restore Cache global node modules
+      - name: Restore Cache global node_modules
         uses: actions/cache/restore@v3
         env:
           cache-name: cache-global-node-modules
@@ -84,12 +84,17 @@ jobs:
         shell: pwsh
         run: pwd
 
+      - name: Get current directory
+        id: app-current-dir
+        shell: pwsh
+        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
+
       - name: Save Cache app node modules
         uses: actions/cache@v3
         env:
           cache-name: cache-app-node-modules
         with:
-          path: ./node_modules
+          path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
           key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   build:
@@ -128,6 +133,11 @@ jobs:
         shell: pwsh
         run: pwd
 
+      - name: Get current directory
+        id: app-current-dir
+        shell: pwsh
+        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
+
       - name: See folder
         run: ls -l
 
@@ -137,7 +147,7 @@ jobs:
           cache-name: cache-app-node-modules
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ./node_modules
+          path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
           key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: See folder
@@ -152,7 +162,7 @@ jobs:
           cache-name: cache-app-dist
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ./dist
+          path: ${{ steps.npm-current-dir.outputs.dir }}/dist
           key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   deploy:
@@ -160,14 +170,29 @@ jobs:
     if: ${{ always() }}
     needs: [build]
     steps:
+      - name: Show current directory
+        shell: pwsh
+        run: pwd
+
+      - name: Get current directory
+        id: app-current-dir
+        shell: pwsh
+        run: echo "dir=$(pwd)" >> ${env:GITHUB_OUTPUT}
+
+      - name: See folder
+        run: ls -l
+
       - name: Restore Cache dist
         uses: actions/cache/restore@v3
         env:
           cache-name: cache-app-dist
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ./dist
+          path: ${{ steps.app-current-dir.outputs.dir }}/dist
           key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
+      - name: See folder
+        run: ls -l
 
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.13

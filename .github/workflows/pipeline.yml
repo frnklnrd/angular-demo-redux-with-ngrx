@@ -27,9 +27,6 @@ jobs:
       - name: Setup Angular CLI
         run: npm install -g @angular/cli
 
-      - name: Setup cache
-        uses: actions/cache@v3
-
       - name: Save Cache global node modules
         uses: actions/cache/save@v3
         env:
@@ -56,9 +53,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.17.x
-
-      - name: Setup cache
-        uses: actions/cache@v3
 
       - name: Restore Cache global node modules
         uses: actions/cache/restore@v3
@@ -98,9 +92,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.17.x
-
-      - name: Setup cache
-        uses: actions/cache@v3
 
       - name: Restore Cache global node modules
         uses: actions/cache/restore@v3

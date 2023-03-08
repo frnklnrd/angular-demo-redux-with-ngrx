@@ -39,7 +39,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   install:
     runs-on: ubuntu-22.04
@@ -67,7 +67,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Dependencies
         run: npm ci
@@ -79,7 +79,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   build:
     runs-on: ubuntu-22.04
@@ -107,7 +107,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: See folder
         run: ls -l
@@ -119,7 +119,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: See folder
         run: ls -l

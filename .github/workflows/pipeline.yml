@@ -33,7 +33,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
       - name: Save Cache global node modules
-        uses: actions/cache/save@v3
+        uses: actions/cache@v3
         env:
           cache-name: cache-global-node-modules
         with:
@@ -61,7 +61,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
       - name: Restore Cache global node modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache@v3
         env:
           cache-name: cache-global-node-modules
         with:
@@ -73,7 +73,7 @@ jobs:
         run: npm ci
 
       - name: Save Cache app node modules
-        uses: actions/cache/save@v3
+        uses: actions/cache@v3
         env:
           cache-name: cache-app-node-modules
         with:
@@ -100,7 +100,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
       - name: Restore Cache global node modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache@v3
         env:
           cache-name: cache-global-node-modules
         with:
@@ -112,7 +112,7 @@ jobs:
         run: ls -l
 
       - name: Restore Cache app node modules
-        uses: actions/cache/restore@v3
+        uses: actions/cache@v3
         env:
           cache-name: cache-app-node-modules
         with:
@@ -126,11 +126,29 @@ jobs:
       - name: Build App
         run: npm run build
 
+      - name: Save Cache dist
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-app-dist
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ./dist
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
   deploy:
     runs-on: ubuntu-22.04
     if: ${{ always() }}
     needs: [build]
     steps:
+      - name: Restore Cache dist
+        uses: actions/cache@v3
+        env:
+          cache-name: cache-app-dist
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ./dist
+          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+
       - name: Deploy to Heroku
         uses: akhileshns/heroku-deploy@v3.12.13
         with:

@@ -91,7 +91,7 @@ jobs:
 
       - name: Show current directory
         shell: pwsh
-        run: echo "${{ steps.app-current-dir.outputs.dir }}/node_modules"
+        run: echo "${{ steps.app-current-dir.outputs.dir }}"
 
       - name: Show current directory content
         shell: pwsh

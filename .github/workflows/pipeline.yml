@@ -1,5 +1,5 @@
 name: Deployment Pipeline
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+run-name: Running ID [${{github.run_id}}] By [${{ github.actor }}] Deployment GitHub Actions 🚀
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -43,7 +43,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   install:
     runs-on: ubuntu-22.04
@@ -75,7 +75,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install Dependencies
         run: npm ci
@@ -107,7 +107,7 @@ jobs:
           cache-name: cache-app-node-modules
         with:
           path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   build:
     runs-on: ubuntu-22.04
@@ -139,7 +139,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-cache-dir.outputs.dir }}
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Show current directory
         shell: pwsh
@@ -160,7 +160,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.app-current-dir.outputs.dir }}/node_modules
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: See folder
         run: ls -l
@@ -175,7 +175,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.npm-current-dir.outputs.dir }}/dist
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
   deploy:
     runs-on: ubuntu-22.04
@@ -201,7 +201,7 @@ jobs:
         with:
           # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ${{ steps.app-current-dir.outputs.dir }}/dist
-          key: ${{ runner.os }}-run-${{github.run_id}}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: See folder
         run: ls -l

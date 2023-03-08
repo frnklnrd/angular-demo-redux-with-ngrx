@@ -61,7 +61,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
       - name: Restore Cache global node modules
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         env:
           cache-name: cache-global-node-modules
         with:
@@ -100,7 +100,7 @@ jobs:
         run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
 
       - name: Restore Cache global node modules
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         env:
           cache-name: cache-global-node-modules
         with:
@@ -112,7 +112,7 @@ jobs:
         run: ls -l
 
       - name: Restore Cache app node modules
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         env:
           cache-name: cache-app-node-modules
         with:
@@ -141,7 +141,7 @@ jobs:
     needs: [build]
     steps:
       - name: Restore Cache dist
-        uses: actions/cache@v3
+        uses: actions/cache/restore@v3
         env:
           cache-name: cache-app-dist
         with:
